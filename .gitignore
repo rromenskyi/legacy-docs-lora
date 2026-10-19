@@ -1,0 +1,24 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Never commit source documents, extracted text, or generated datasets.
+data/
+raw/
+extracted/
+dataset/
+*.pdf
+*.djvu
+*.doc
+*.docx
+*.rtf
+*.chm
+*.fb2
+*.rar
+*.zip
+*.jsonl
+*.gguf
+*.safetensors
+
+.DS_Store
