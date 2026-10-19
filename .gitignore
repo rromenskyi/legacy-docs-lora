@@ -3,11 +3,12 @@ __pycache__/
 .venv/
 venv/
 
-# Never commit source documents, extracted text, or generated datasets.
+# Never commit source documents, extracted text, or generated datasets
+# (the dataset/ *directory* here is pipeline code, not data -- actual
+# generated output is .jsonl, already excluded below).
 data/
 raw/
 extracted/
-dataset/
 *.pdf
 *.djvu
 *.doc
