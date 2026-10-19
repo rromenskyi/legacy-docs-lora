@@ -26,4 +26,8 @@ documents"; nothing dog-specific is hardcoded.
 
 ## Status
 
-Planning stage — no code yet.
+- `ingest/` — done, verified end to end on real mixed-format files.
+- `dataset/` — done, verified end to end against a local model.
+- `train/` — written, **not yet run**. Target hardware is a borrowed
+  DGX Spark (CUDA); exact base checkpoint (a Nemotron release) not yet
+  picked, see `train/README.md` for open questions.
