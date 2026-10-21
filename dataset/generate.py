@@ -25,7 +25,7 @@ from pathlib import Path
 
 import requests
 
-from chunker import chunk_text
+from chunker import chunk_text, dedup_chunks, is_low_value
 
 SYSTEM_PROMPT = """You write training examples for fine-tuning a language model on a \
 specific domain. Given a passage of source text, produce instruction/answer pairs that \
@@ -117,14 +117,26 @@ def main():
     api_key = os.environ.get("OPENAI_API_KEY")
 
     jobs = []  # (source, chunk_idx, chunk_text)
+    skipped_low_value = 0
     for txt_file in sorted(args.text_dir.glob("*.txt")):
         text = txt_file.read_text(encoding="utf-8", errors="ignore")
         for i, chunk in enumerate(chunk_text(text)):
+            if is_low_value(chunk):
+                skipped_low_value += 1
+                continue
             jobs.append((txt_file.name, i, chunk))
+
+    before_dedup = len(jobs)
+    jobs = dedup_chunks(jobs)
+    skipped_dup = before_dedup - len(jobs)
+
     if args.limit_chunks:
         jobs = jobs[: args.limit_chunks]
 
-    print(f"{len(jobs)} chunks queued from {len(set(j[0] for j in jobs))} documents")
+    print(
+        f"{len(jobs)} chunks queued from {len(set(j[0] for j in jobs))} documents "
+        f"({skipped_low_value} low-value chunks skipped, {skipped_dup} near-duplicates dropped)"
+    )
 
     results = []
     with ThreadPoolExecutor(max_workers=args.workers) as pool:
