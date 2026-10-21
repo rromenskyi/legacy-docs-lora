@@ -28,6 +28,8 @@ documents"; nothing dog-specific is hardcoded.
 
 - `ingest/` — done, verified end to end on real mixed-format files.
 - `dataset/` — done, verified end to end against a local model.
-- `train/` — written, **not yet run**. Target hardware is a borrowed
-  DGX Spark (CUDA); exact base checkpoint (a Nemotron release) not yet
-  picked, see `train/README.md` for open questions.
+- `train/` — written, **not yet run against real hardware**. Base
+  checkpoint picked: `nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16`
+  (hybrid Mamba2+Attention+MoE), via Axolotl (not the generic
+  transformers+peft script — see `train/README.md` for why). Target is
+  a borrowed DGX Spark.

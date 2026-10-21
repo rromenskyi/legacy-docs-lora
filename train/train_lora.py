@@ -3,18 +3,20 @@
 ../dataset/generate.py. CUDA-native (transformers + peft + trl) --
 meant for an NVIDIA box (e.g. a DGX Spark), not Apple Silicon/MLX.
 
+For a plain dense transformer only -- see README.md. NemotronH (hybrid
+Mamba2 + Attention + MoE) does NOT work here: its MoE expert weights are
+3D nn.Parameter tensors that PEFT's "all-linear" target_modules
+auto-detect (this script's default) silently never reaches. Use
+axolotl_nemotron_30b_a3b.yaml instead for that architecture.
+
 Usage:
     python train_lora.py \
-        --model nvidia/<some-nemotron-checkpoint> \
+        --model <hf-repo-id-of-a-plain-dense-model> \
         --dataset ../dataset/dataset.jsonl \
         --output-dir ./out \
         --lora-r 16 --epochs 2
 
-Status: written but not yet run against real hardware -- target_modules
-defaults to PEFT's "all-linear" auto-detection specifically because
-this hasn't been validated against the exact Nemotron checkpoint/
-architecture yet (MoE naming can need a narrower target list; check
-once a specific checkpoint is picked).
+Status: written but not yet run against real hardware.
 """
 
 from __future__ import annotations
